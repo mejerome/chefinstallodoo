@@ -36,3 +36,8 @@ postgresql_server_install 'Setup my PostgreSQL 9.6 server' do
   action :create
 end
 
+# Install Python Dependencies
+package 'python3-pip' do
+  action :install
+end
+
