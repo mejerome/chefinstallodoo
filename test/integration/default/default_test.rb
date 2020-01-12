@@ -26,15 +26,22 @@ describe package('python3-pip') do
   it { should be_installed }
 end
 
-py_pack = %w(Babel decorator docutils ebaysdk feedparser
-             gevent greenlet html2text Jinja2 lxml Mako MarkupSafe mock
-             num2words ofxparse passlib Pillow psutil psycogreen psycopg2
-             pydot pyparsing PyPDF2 pyserial python-dateutil python-openid
-             pytz pyusb PyYAML qrcode reportlab requests six suds-jurko
-             vatnumber vobject Werkzeug XlsxWriter xlwt xlrd
+describe package('libpq-dev') do
+  it { should be_installed }
+end
+
+pip_package = %w(Babel decorator docutils ebaysdk feedparser gevent greenlet html2text Jinja2 lxml Mako MarkupSafe mock num2words ofxparse passlib Pillow psutil psycogreen psycopg2 pydot pyparsing PyPDF2 pyserial python-dateutil python-openid pytz pyusb PyYAML qrcode reportlab requests six suds-jurko vatnumber vobject Werkzeug XlsxWriter xlwt xlrd
 )
-py_pack.each do |p|
-  describe pip(p) do
-    it { should be_installed }
+pip_package.each do |p|
+  describe directory("/usr/local/lib/python3.6/dist-packages") do
+    its('link_path') { should match / #{p} / }
   end
+end
+
+describe package('npm') do
+  it { should be_installed }
+end
+
+describe command('ln -s /usr/bin/nodejs /usr/bin/node') do
+  it { should exist }
 end

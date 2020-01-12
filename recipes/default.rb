@@ -16,6 +16,7 @@ apt_repository 'odoo' do
   notifies :run, 'apt_update[update-odoo]', :immediately
 end
 
+# Run apt update
 apt_update 'update-odoo' do
   ignore_failure true
   action :nothing
@@ -41,3 +42,26 @@ package 'python3-pip' do
   action :install
 end
 
+# Install requirement for pip-psycopg2
+package 'libpq-dev' do
+  action :install
+end
+
+# Install Pip Packages
+%w(Babel decorator docutils ebaysdk feedparser gevent greenlet html2text Jinja2 lxml Mako MarkupSafe mock num2words ofxparse passlib Pillow psutil psycogreen psycopg2 pydot pyparsing PyPDF2 pyserial python-dateutil python-openid pytz pyusb PyYAML qrcode reportlab requests six suds-jurko vatnumber vobject Werkzeug XlsxWriter xlwt xlrd).each do |package|
+  execute "pip3 install #{package}" do
+    command "pip3 install #{package}"
+    action :run
+  end
+end
+
+# Install npm
+package 'npm' do
+  action :install
+end
+
+# Create Symbolic link for nodejs
+execute 'ln nodejs' do
+  command 'sudo ln -s /usr/bin/nodejs /usr/bin/node'
+  action :run
+end
